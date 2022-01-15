@@ -1,5 +1,5 @@
 # Flask-CRUD-NLP
-A simple Flask site that allows users to create, update, and delete posts in a database, as well as perform basic NLP tasks on the posts.
+A simple Flask site that allows users to create, update, and delete posts in a database, as well as perform basic NLP tasks on the posts. The app allows for PDF uploads, and will perform OCR on the PDFs and add the text to the database. NLP tasks include sentiment analysis (on individual posts or all posts combined as one text), returning word counts and average word lengths for posts, and generating a word cloud from the posts.
 
 ## Getting Started
 Install dependencies using pip:
