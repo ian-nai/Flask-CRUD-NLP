@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block title %} Upload {% endblock title %}
+
+{% block body %}
+<html>
+<head>
+  <title>File Upload</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="static/stylesheet.css">
+</head>
+<body>
+  <div class="hero-image">
+    <div class="hero-text">
+      <h1 style="font-size:50px"><a href="{{ url_for('index') }}" class="link-dark">Simple DB + NLP</a></h1>
+    </div>
+  </div>
+  <h1>File Upload</h1>
+  <form method="POST" action="/upload" enctype="multipart/form-data">
+    <p><input type="file" name="file"><input type="submit" class="btn btn-secondary" value="Upload"></p>
+  </form>
+
+  <div class="container my-3">
+    <form action="/create_record" method="POST">
+      <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" class="form-control" name="title" id="title">
+      </div>
+      <div class="mb-3">
+        <label for="desc" class="form-label">Description</label>
+        <input type="text" class="form-control" name="desc" id="desc">
+      </div>
+      <div class="mb-3">
+        <label for="test" class="form-label">Text</label>
+        <textarea class="form-control" name="test" id="test"rows="3"> {{text}}</textarea>
+      </div>
+
+      <button type="submit" class="btn btn-secondary">Submit</button>
+    </form>
+
+    <br />
+    <div class="input-group input-group-lg">
+      <form class="form-inline" method="POST" id="dropdown_selector" action="{{ url_for('upload_form') }}">
+        <p> Select from uploaded files: </p>
+        <select name="file_select" class="selectpicker form-control">
+          <option value="{{file_list[0]}}" selected>{{file_list[0]}}</option>
+          {% for upload in file_list[1:] %}
+          <option value="{{upload}}">{{upload}}</option>
+          {% endfor %}
+        </select>
+        <br />
+        <button type="submit" class="btn btn-secondary" id="dropdown_text">Populate Textbox with OCR Text</button>
+      </form>
+        <br />
+      </div>
+
+  </div>
+  <br />
+  <br />
+
+</body>
+
+<script>
+  $(document).ready(function() {
+    $('#dropdown_text').click(function(){
+      $.ajax({
+        url: "/upload_form",
+        type: "get",
+        success: function(response) {
+          $("#text").html(response.html);
+        },
+        error: function(xhr) {
+          //Do Something to handle error
+        }
+      });
+    });
+  });
+</script>
+</html>
+{% endblock body %}

@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block title %} NLP {% endblock title %}
+{% block body %}
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="static/stylesheet.css">
+</head>
+<body>
+  <div class="hero-image">
+    <div class="hero-text">
+      <h1 style="font-size:50px"><a href="{{ url_for('index') }}" class="link-dark">Simple DB + NLP</a></h1>
+    </div>
+  </div>
+  <div class="container my-3">
+    <h2>NLP</h2>
+    <div class="mb-3">
+
+    </div>
+    <form method="POST" action="/run_full_an" enctype="multipart/form-data">
+      <input type=checkbox name="indposts" value='ind'> Analyze Each Post Individually <br /><br />
+      <input type=checkbox name="allposts" value='all'> Analyze All Posts as One Text <br /><br />
+      <input type=checkbox name="length_all" value='length_all'> Return the Word Counts and Avg Word Lengths of Each Post<br /><br />
+      <input type=checkbox name="length_summary" value='length_summary'> Return the Word Count of All Posts Combined <br /><br />
+      <input type=checkbox name="word_cloud_box" value='word_cloud_box'> Generate Word Cloud <br /><br />
+      <p><input type="submit" value="Submit" id="submit" class="btn btn-secondary"></p>
+    </form>
+
+    <style>
+      table, th, td {
+        border: 1px solid black;
+      }
+    </style>
+    <table>
+      <tr>
+        <th>Title</th>
+        <th>Word Counts</th>
+      </tr>
+      {% for row in zipped_word_lengths %}
+      <tr>
+        <td>{{ row[0] }}</td> <td>{{ row[1] }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    <br />
+    <table>
+      <tr>
+        <th>Title</th>
+        <th>Avg Word Lengths</th>
+      </tr>
+      {% for row in zipped_word_averages %}
+      <tr>
+        <td>{{ row[0] }}</td> <td>{{ row[1] }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+
+    {% for el in tokenized_summary %}
+    <p>Word Count of All Posts Combined: {{ el }} </p>
+    {% endfor %}
+
+
+
+    {% for el in list_of_results %}
+    <p> {{ el }} </p>
+    {% endfor %}
+
+    <img src="static/posts_wordcloud.png" />
+
+
+  </body>
+
+  {% endblock body %}
